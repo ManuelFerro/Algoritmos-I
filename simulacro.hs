@@ -1,4 +1,5 @@
 import Test.HUnit
+import Data.String (String)
 relacionesValidas:: [(String,String)] -> Bool
 relacionesValidas [] = True
 relacionesValidas (a0:as) | noTuplasRepetidas (a0:as) == True && noTuplasAmbasIguales (a0:as) == True = True
@@ -44,9 +45,13 @@ cardinal:: [t] -> integer
 cardinal [] = 0
 cardinal (t:ts) = 1 + cardinal (ts) 
 
+cantidadDeAmigos:: String -> [(String,String)] -> Integer
+cantidadDeAmigos p rs = cardinal(amigosDe p rs)  
+
 personaConMasAmigos:: [(String,String)] -> String
-personaConMasAmigos ((a,b):xs) | cardinal(amigosDe head(personas ((a,b):xs))) >= cardinal(amigosDe head(personas ((xs))) = head(personas ((a,b):xs))
-                               | otherwise personaConMasAmigos (xs)
+personaConMasAmigos red = personaonMasAmigosAux (personas red) red 
 
+{-personaConMasAmigosAux:: [String] -> [(String,String)] -> String
+personaConMasAmigosAux 
 
-
+-}
