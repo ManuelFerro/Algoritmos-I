@@ -1,4 +1,5 @@
 import numpy
+from typing import Any
 
 #ejemplos y ejercicio 1
 
@@ -108,3 +109,76 @@ def trabajo_o_vacaciones(masculino:bool,edad:int): #el sexo es el que figura en 
             res= print("Andá de vacaciones")
         else: res = print("Te toca trabajar")
     return res
+
+def sumaTotal(s:[int]) -> int:
+    total: int=0
+    longitud: int=len(s)
+    indice_actual: int=0
+    while indice_actual < longitud:
+        total+= s[indice_actual] # += equivale a "total= total + s[indice_actual]" 
+        indice_actual += 1
+    return total 
+
+def pertenece(s:[], e: Any) -> bool:
+    res:bool=False
+    for i in range (0, len(s)):    
+        if e==s[i]:
+            res = True          
+    return res
+
+def es_numero(c: str) -> bool:
+    res: bool=False
+    if (c<="9") and (c>="0"):
+        res=True
+    return res
+
+def es_mayus(c: str) -> bool:
+    res: bool=False
+    if (c<="Z") and (c>="A"):
+        res=True
+    return res
+
+def es_minus(c: str) -> bool:
+    res: bool=False
+    if (c<="z") and (c>="a"):
+        res=True
+    return res
+
+def fortaleza_contraseña(contra:str):
+    longitud: int=len(contra)
+    
+    longitud_mayor_8: bool =False
+    if longitud >= 8:
+        longitud_mayor_8= True
+    
+    longitud_menor_5: bool =False
+    if longitud < 5:
+        longitud_menor_5= True
+
+    tiene_mayus: bool=False
+    indice_actual: int=0
+    while indice_actual < longitud:
+        if es_mayus(contra[indice_actual]):
+            tiene_mayus= True
+        indice_actual += 1
+
+    tiene_minus: bool=False
+    indice_actual: int=0
+    while indice_actual < longitud:
+        if es_minus(contra[indice_actual]):
+            tiene_minus= True
+        indice_actual += 1
+        
+    tiene_numero: bool=False
+    indice_actual: int=0
+    while indice_actual < longitud:
+        if es_numero(contra[indice_actual]):
+            tiene_numero= True
+        indice_actual += 1
+
+    if longitud_mayor_8 and tiene_mayus and tiene_minus and tiene_numero:
+        return "VERDE"
+    elif longitud_menor_5: #else if
+        return "ROJA"
+    else:
+        return "AMARILLA"
