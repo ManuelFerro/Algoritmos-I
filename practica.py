@@ -1,5 +1,9 @@
 import numpy
+import random
 from typing import Any
+from queue import LifoQueue as Pila #Last In, First Out
+from queue import Queue as Cola #"Fifo": First In, First Out
+
 
 #ejemplos y ejercicio 1
 
@@ -182,3 +186,156 @@ def fortaleza_contraseña(contra:str):
         return "ROJA"
     else:
         return "AMARILLA"
+    
+#Pilas, Colas, Archivos
+
+#Pilas, importado de Queue
+p = Pila()
+p.put(1) #apilar
+p.put(2) #apilar
+p.put(3) #apilar
+print(list(p.queue))
+elemento = p.get()
+print(elemento) #desapilar
+print(p.empty()) #vacia ?
+print(list(p.queue))
+
+#Colas, importado de Queue
+c= Cola()
+c.put(1) #Encolar
+c.put(2) #Encolar
+c.put(3) #Encolar
+print(list(c.queue))
+elemento = c.get()
+print(elemento) #desEncolar
+print(c.empty()) #vacia ?
+print(list(c.queue))
+
+#diccionarios, nativos de python
+d = dict() #d es diccionario
+d[2] = "Argentina" #asigno al valor 2 la clave "Argentina"
+                   #si no había nada lo agrega, si lo había lo pisa
+2 in d #si el valor 2 está libre
+
+def clonarSinComentarios(nombre_archivo: str):
+
+    arch_Comentado = open(nombre_archivo,"r")
+    arch_Sin_Comentario = open("clonadoSinComentarios.py", "w")
+    lineas = arch_Comentado.readLines()
+
+    for linea in lineas:
+        if not linea.strip()[0] == "#":
+            arch_Sin_Comentario.write(linea)
+    arch_Comentado.close()
+    arch_Sin_Comentario.close()
+
+    return
+
+def buscarElMaximo(p:Pila) -> int:
+    max: int = p.get()
+    paux: Pila = Pila()
+
+    while (not p.empty()):
+        elem = p.get()
+        paux.put(elem)
+        if elem > max :
+            max = elem
+
+    while not paux.empty():
+        elem = paux.get()
+        p.put(elem)
+            
+    return max
+
+def contarElementosPila(p: Pila) -> int:
+    res: int = 0
+    paux: Pila = Pila()
+
+    while (not p.empty()):
+        elem = p.get()
+        paux.put(elem)
+        res = res + 1
+
+    while not paux.empty():
+        elem = paux.get()
+        p.put(elem)
+
+    return res
+
+def contarElementosCola(c: Cola) -> int:
+    res: int = 0
+    caux: Cola = Cola()
+
+    while (not c.empty()):
+        elem = c.get()
+        caux.put(elem)
+        res = res + 1
+
+    while not caux.empty():
+        elem = caux.get()
+        c.put(elem)
+
+    return res
+
+def armarSecuenciaDeBingo() -> Cola:
+    bolillero:Cola = Cola()
+    listaOrd:list = list(range(0,99))
+    lista:list = random.shuffle(listaOrd)
+
+    while len(lista) > 0:
+        bolillero.put(lista.pop())
+    
+    return bolillero
+
+def jugarCartonDeBingo(carton: [int], bolillero: Cola) -> int:
+    intentos: int = 0
+    aciertos: int = 0
+
+    while aciertos < 12:
+        for i in range (0, 99):
+            if carton[i] == bolillero.pop():
+                aciertos = aciertos + 1
+                intentos = intentos + 1
+            else: intentos = intentos + 1
+        
+    return intentos
+
+def agruparPorLongitud(nombre_archivo: str) -> dict:
+    archivo = open(nombre_archivo, "r")
+    d = dict()
+    lineas = archivo.readLines()
+
+    for linea in lineas:
+        palabras = linea.split()
+        for palabra in palabras:
+            longitud = len(palabra)
+            if (longitud in d):
+                d[longitud] += 1 #le sumo 1
+            else:
+                d[longitud] = 1 #al asignarle un valor, creo la clave (antes no existia)
+    
+    archivo.close()
+    return d
+
+def palabraMasFrecuente(nombre_archivo: str) -> str:
+    archivo = open(nombre_archivo, "r")
+    d = dict()
+
+    lineas = archivo.readLines()
+    for linea in lineas:
+        palabras = linea.split()
+        for palabra in palabras:
+            if (palabra in d):
+                d[palabra] += 1
+            else:
+                d[palabra] = 1
+        
+        max: int = 0
+        claveMax: str
+        for palabra,frecuencia in d.items():
+            if frecuencia > max:
+                max = frecuencia
+                claveMax = palabra
+
+    archivo.close()
+    return claveMax
