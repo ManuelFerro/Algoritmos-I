@@ -226,10 +226,11 @@ def clonarSinComentarios(nombre_archivo: str):
     for linea in lineas:
         if not linea.strip()[0] == "#":
             arch_Sin_Comentario.write(linea)
+
     arch_Comentado.close()
     arch_Sin_Comentario.close()
 
-    return
+    return 
 
 def buscarElMaximo(p:Pila) -> int:
     max: int = p.get()
@@ -339,3 +340,25 @@ def palabraMasFrecuente(nombre_archivo: str) -> str:
 
     archivo.close()
     return claveMax
+
+def reverso(nombre_archivo: str):
+    archivo = open(nombre_archivo, "r")
+    arch_reverso = open("reverso.txt", "w")
+
+    lineas = archivo.readlines()
+    for i in range(len(lineas)-1, -1, -1):
+        arch_reverso.write(lineas[i])
+
+    archivo.close()
+    arch_reverso.close()
+
+print("voy a testear")
+reverso("hola.py")
+print("testie")
+
+def agregarFrase(archivo: str, palabra:str):
+    archivo = open (archivo, "a") #append escribe al final sin reescribir el archivo, write escribe al inicio pisando lo anterior
+    archivo.write(palabra)
+    archivo.close()
+    
+    return
