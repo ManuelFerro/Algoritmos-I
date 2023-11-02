@@ -13,8 +13,6 @@ def prueba():
 def imprimir_hola():
     print ("Hola Manu")
 
-imprimir_hola()
-
 def es_multiplo_de(n:int,m:int) -> bool:
     res:bool = (n%m)==0 # mod n m ==0 en haskell
     return res
@@ -194,22 +192,24 @@ p = Pila()
 p.put(1) #apilar
 p.put(2) #apilar
 p.put(3) #apilar
-print(list(p.queue))
+# print(list(p.queue))
 elemento = p.get()
-print(elemento) #desapilar
-print(p.empty()) #vacia ?
-print(list(p.queue))
+# print(elemento) #desapilar
+# print(p.empty()) #vacia ?
+
+# print(list(p.queue))
+
 
 #Colas, importado de Queue
 c= Cola()
 c.put(1) #Encolar
 c.put(2) #Encolar
 c.put(3) #Encolar
-print(list(c.queue))
+# print(list(c.queue))
 elemento = c.get()
-print(elemento) #desEncolar
-print(c.empty()) #vacia ?
-print(list(c.queue))
+# print(elemento) #desEncolar
+# print(c.empty()) #vacia ?
+# print(list(c.queue))
 
 #diccionarios, nativos de python
 d = dict() #d es diccionario
@@ -233,29 +233,33 @@ def clonarSinComentarios(nombre_archivo: str):
     return 
 
 def buscarElMaximo(p:Pila) -> int:
-    max: int = p.get()
-    paux: Pila = Pila()
+    max: int = p.get() #no estoy sacando un elemento? esta bien??
+    aux: list = []
+    aux.append(max)
 
     while (not p.empty()):
         elem = p.get()
-        paux.put(elem)
+        aux.append(elem)
         if elem > max :
             max = elem
 
-    while not paux.empty():
-        elem = paux.get()
+    while len(aux) > 0:
+        elem = aux.pop()
         p.put(elem)
             
     return max
+
+# print(buscarElMaximo(p))
+# print(list(p.queue)) asi se printea una pila, o una cola
 
 def contarElementosPila(p: Pila) -> int:
     res: int = 0
     paux: Pila = Pila()
 
-    while (not p.empty()):
+    while not p.empty():
         elem = p.get()
         paux.put(elem)
-        res = res + 1
+        res += 1
 
     while not paux.empty():
         elem = paux.get()
@@ -284,7 +288,7 @@ def armarSecuenciaDeBingo() -> Cola:
     lista:list = random.shuffle(listaOrd)
 
     while len(lista) > 0:
-        bolillero.put(lista.pop())
+        bolillero.put(lista.pop()) 
     
     return bolillero
 
@@ -292,12 +296,12 @@ def jugarCartonDeBingo(carton: [int], bolillero: Cola) -> int:
     intentos: int = 0
     aciertos: int = 0
 
-    while aciertos < 12:
+    while aciertos < 12 and intentos < 99:
         for i in range (0, 99):
-            if carton[i] == bolillero.pop():
-                aciertos = aciertos + 1
-                intentos = intentos + 1
-            else: intentos = intentos + 1
+            if carton[i] == bolillero.pop(): # .pop = .get pero para listas
+                aciertos += 1
+                intentos += 1
+            else: intentos += 1
         
     return intentos
 
@@ -346,15 +350,13 @@ def reverso(nombre_archivo: str):
     arch_reverso = open("reverso.txt", "w")
 
     lineas = archivo.readlines()
-    for i in range(len(lineas)-1, -1, -1):
+    arch_reverso.write(lineas[len(lineas)-1]+'\n') #escribo la última linea a mano con un espacio concatenado
+    
+    for i in range(len(lineas)-2, -1, -1):
         arch_reverso.write(lineas[i])
-
     archivo.close()
     arch_reverso.close()
-
-print("voy a testear")
-reverso("hola.py")
-print("testie")
+    return 
 
 def agregarFrase(archivo: str, palabra:str):
     archivo = open (archivo, "a") #append escribe al final sin reescribir el archivo, write escribe al inicio pisando lo anterior
@@ -362,3 +364,73 @@ def agregarFrase(archivo: str, palabra:str):
     archivo.close()
     
     return
+
+def agregarFrasePrincipio(archivo: str, palabra: str):
+    arch = open (archivo, "r")
+    
+    lineas = [palabra+'\n'] + arch.readlines()
+    arch.close()
+    
+    arch = open (archivo, "w")
+    for linea in lineas:
+        arch.write(linea)        
+
+    arch.close()
+    return
+
+def from_str_to_float(s: str) -> float:
+    res = s
+    return res
+    
+def obtenerDatosLinea(linea: str) -> ([str], float):
+    dato: str
+    datos: [str]
+    contadorDatos: int = 0
+    indiceLista: int = 0
+    
+    while contadorDatos > 3:
+        for i in range(0, len(linea), 1):
+            if linea[i]!=",":
+                dato += linea[i]
+                indiceLista += 1
+            else:
+                datos + [dato]
+                dato = []
+                contadorDatos += 1
+                indiceLista += 1
+                
+    for i in range (indiceLista, len(lista), 1):
+        dato += linea[i]
+    
+    nota = from_str_to_float(dato)
+    
+    return (datos, nota)  
+
+def promedioEstudiante(LU: str) -> float:
+    archivo = open ("notas.txt", "r") #escribir notas en archivo aparte
+    cantidadMaterias: float = 0
+    totalNotas: float = 0
+    listaElems: list = list()
+    
+    lineas = archivo.readlines()
+    for linea in lineas:
+        elems = obtenerDatosLinea(linea)
+        listaElems + [elems]
+        
+    for elems in listaElems:
+        for (datos, nota) in elems:
+            if datos[0]==LU:
+                cantidadMaterias += 1
+                totalNotas += nota
+    
+    res= totalNotas/cantidadNotas
+    return res
+        
+def esta_bien_balanceada(formula : str) -> bool: #ejercicio 11
+    pass
+    
+def n_pacientes_urgentes(c: Cola) -> int: #ejercicio 17, c es cola de [(int, str, str)]
+    pass
+
+
+    
